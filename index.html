@@ -1,428 +1,376 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Resume | Abdulrahman Abohelal, BIM Structural Engineer</title>
+    <title>Gemini-Powered Resume Editor</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Chosen Palette: Warm Neutral Harmony -->
-    <!-- Application Structure Plan: The SPA uses a two-column dashboard layout. A sticky left-hand navigation panel provides constant access to key sections, while the right-hand content area allows for focused exploration. This non-linear structure enables recruiters to quickly access the information most relevant to them, such as skills or projects. The user flow is designed to guide from a high-level overview to detailed deep-dives, creating a more engaging narrative of the candidate's career progression than a traditional linear resume. -->
-    <!-- Visualization & Content Choices: 
-        - Career Timeline: Report Info -> Job History Dates. Goal -> Show progression. Viz -> Horizontal Bar Chart (Chart.js). Interaction -> Hover for details. Justification -> Visually summarizes career length and stages instantly.
-        - Skills Assessment: Report Info -> Technical Skills List. Goal -> Compare proficiency. Viz -> Grouped Horizontal Bar Charts (Chart.js). Interaction -> Hover for proficiency level. Justification -> More impactful and easier to compare skill strengths than a static list.
-        - Project Showcase: Report Info -> Key Projects List. Goal -> Organize and detail project experience. Viz -> Interactive HTML/CSS cards. Interaction -> Click to expand/reveal details. Justification -> Turns a simple list into an engaging portfolio highlight.
-        - Navigation: Report Info -> Resume Sections. Goal -> Guide user. Viz -> Highlighted links. Interaction -> Click to scroll and highlight. Justification -> Standard, effective UX for SPAs.
-    -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
         }
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 250px;
-            max-height: 300px;
+        /* Custom styles for the icons */
+        .icon {
+            fill: #6b7280; /* Gray-500 */
         }
-        @media (min-width: 768px) {
-            .chart-container {
-                height: 300px;
-                max-height: 350px;
-            }
+        .icon-link {
+            transition: fill 0.2s ease-in-out;
         }
-        .nav-link.active {
-            background-color: #e0f2fe;
-            color: #0369a1;
-            font-weight: 600;
+        .icon-link:hover .icon {
+            fill: #3b82f6; /* Blue-500 */
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-700">
+<body class="bg-gray-100 p-8 flex justify-center items-start min-h-screen">
 
-    <div class="max-w-screen-xl mx-auto p-4 sm:p-6 lg:p-8">
-        <div class="lg:grid lg:grid-cols-12 lg:gap-12">
+    <div id="app" class="bg-white rounded-lg shadow-2xl p-8 max-w-5xl w-full flex flex-col lg:flex-row">
 
-            <aside class="lg:col-span-4 xl:col-span-3 lg:sticky lg:top-8 lg:self-start mb-8 lg:mb-0">
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                    <div class="text-center">
-                        <h1 class="text-2xl font-bold text-slate-900">Abdulrahman Abohelal</h1>
-                        <p class="text-sky-700 font-medium mt-1">BIM Structural Engineer</p>
-                    </div>
-                    <div class="mt-6 text-sm">
-                        <div class="flex items-center mb-3">
-                            <svg class="w-4 h-4 mr-3 text-slate-400 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" /></svg>
-                            <span>Nasr City, Cairo, Egypt</span>
-                        </div>
-                        <div class="flex items-center mb-3">
-                             <svg class="w-4 h-4 mr-3 text-slate-400 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
-                            <span>+20 102 737 0971</span>
-                        </div>
-                        <div class="flex items-center mb-3">
-                            <svg class="w-4 h-4 mr-3 text-slate-400 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" /><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" /></svg>
-                            <a href="mailto:Abdulrahman.Abohelal@gmail.com" class="hover:text-sky-700">Abdulrahman.Abohelal@gmail.com</a>
-                        </div>
-                         <div class="flex items-center">
-                            <svg class="w-4 h-4 mr-3 text-slate-400 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                            <a href="https://linkedin.com/in/abdulrahman-abohelal" target="_blank" class="hover:text-sky-700">linkedin.com/in/abdulrahman-abohelal</a>
-                        </div>
-                    </div>
+        <!-- Left Column - Personal Info -->
+        <div class="lg:w-1/3 w-full p-6 bg-gray-50 rounded-lg shadow-inner flex flex-col items-center lg:items-start lg:mr-8 mb-8 lg:mb-0">
+            <!-- Personal Photo -->
+            <div class="mb-6">
+                <!--
+                    Note: This is a placeholder image.
+                    Please replace the 'https://' URL below with the URL of your own personal photo.
+                    You can also use a base64-encoded image if you prefer.
+                -->
+                <img src="https://placehold.co/200x200/FFFFFF/000000?text=Your+Photo" alt="Abdulrahman Abohelal" class="rounded-full w-48 h-48 border-4 border-white shadow-lg">
+            </div>
 
-                    <nav class="mt-8">
-                        <ul class="space-y-2">
-                            <li><a href="#overview" data-target="overview" class="nav-link flex items-center px-4 py-2.5 text-sm font-medium rounded-lg transition-colors duration-200 hover:bg-slate-100">Overview</a></li>
-                            <li><a href="#skills" data-target="skills" class="nav-link flex items-center px-4 py-2.5 text-sm font-medium rounded-lg transition-colors duration-200 hover:bg-slate-100">Skills Dashboard</a></li>
-                            <li><a href="#experience" data-target="experience" class="nav-link flex items-center px-4 py-2.5 text-sm font-medium rounded-lg transition-colors duration-200 hover:bg-slate-100">Experience & Projects</a></li>
-                            <li><a href="#education" data-target="education" class="nav-link flex items-center px-4 py-2.5 text-sm font-medium rounded-lg transition-colors duration-200 hover:bg-slate-100">Education & Certifications</a></li>
-                        </ul>
-                    </nav>
+            <!-- Name and Title -->
+            <div class="text-center lg:text-left mb-6">
+                <h1 class="text-3xl font-bold text-gray-800">Abdulrahman Abohelal</h1>
+                <h2 class="text-lg font-semibold text-blue-600">BIM Structural Engineer</h2>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="w-full text-center lg:text-left text-gray-700 mb-8">
+                <div class="flex items-center mb-2 justify-center lg:justify-start">
+                    <svg class="icon w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span>Nasr City, Cairo, Egypt</span>
                 </div>
-            </aside>
-
-            <main class="lg:col-span-8 xl:col-span-9">
-                <div class="space-y-12">
-                    
-                    <section id="overview" class="scroll-mt-24">
-                        <div class="bg-white p-6 sm:p-8 rounded-xl shadow-sm border border-slate-200">
-                            <h2 class="text-2xl font-bold text-slate-900 mb-4">Career Overview</h2>
-                            <p class="mb-6">This section provides a high-level summary of my professional profile and a visual timeline of my career progression. It's designed to give you a quick, comprehensive understanding of my journey as a BIM Structural Engineer over the past three years.</p>
-                            
-                            <div class="bg-slate-50 border border-slate-200 p-6 rounded-lg">
-                                <h3 class="font-semibold text-slate-800 mb-2">Professional Profile</h3>
-                                <p class="text-sm leading-relaxed">
-                                    Results-driven Structural Technical Office Engineer with three years of experience in both consulting and contracting environments. I am skilled at producing precise BIM shop drawings, performing structural analysis, and coordinating cross-disciplinary models for complex projects. Proficient in industry-leading software including Revit, Civil 3D, and Navisworks. Focused on delivering high-quality, BIM-based documentation for infrastructure and high-rise building projects.
-                                </p>
-                            </div>
-
-                            <div class="mt-8">
-                                <h3 class="font-semibold text-slate-800 mb-4 text-center">Career Progression Timeline</h3>
-                                <div class="chart-container">
-                                    <canvas id="timelineChart"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <section id="skills" class="scroll-mt-24">
-                        <div class="bg-white p-6 sm:p-8 rounded-xl shadow-sm border border-slate-200">
-                            <h2 class="text-2xl font-bold text-slate-900 mb-4">Skills Dashboard</h2>
-                            <p class="mb-8">My technical capabilities are a core part of my professional identity. This interactive dashboard visualizes my proficiency across key software categories. The charts below break down my skills in BIM, structural analysis, and infrastructure design, providing a clear and comparative view of my expertise.</p>
-                            
-                            <div>
-                                <h3 class="font-semibold text-slate-800 mb-4 text-center">BIM & Drafting Proficiency</h3>
-                                <div class="chart-container h-64 max-h-72">
-                                    <canvas id="bimSkillsChart"></canvas>
-                                </div>
-                            </div>
-                            <div class="mt-10">
-                                <h3 class="font-semibold text-slate-800 mb-4 text-center">Design, Analysis & Infrastructure</h3>
-                                <div class="chart-container h-64 max-h-72">
-                                    <canvas id="analysisSkillsChart"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                    
-                    <section id="experience" class="scroll-mt-24">
-                        <div class="bg-white p-6 sm:p-8 rounded-xl shadow-sm border border-slate-200">
-                            <h2 class="text-2xl font-bold text-slate-900 mb-4">Experience & Projects</h2>
-                            <p class="mb-8">My professional journey has provided me with a diverse range of experiences, from on-site engineering to specialized technical office roles in bridge and high-rise design. This section details my work history and showcases the key projects I've contributed to. Click on any project to learn more about its scope and my specific role.</p>
-                            
-                            <div class="space-y-8">
-                                <div>
-                                    <h3 class="text-xl font-bold text-slate-800 mb-4 border-b pb-2">Professional Experience</h3>
-                                    <div class="space-y-6">
-                                        <div class="pl-4 border-l-2 border-sky-500">
-                                            <p class="font-semibold text-slate-900">BIM Structural Technical Office Engineer</p>
-                                            <p class="text-sm font-medium text-slate-600">SIAC – Industrial Construction & Engineering Company</p>
-                                            <p class="text-xs text-slate-500 mt-1">Mar 2025 – Present | Cairo, Egypt</p>
-                                            <ul class="list-disc pl-5 mt-2 text-sm space-y-1">
-                                                <li>Produced BIM-based structural shop drawings for high-rise buildings and HSR stations.</li>
-                                                <li>Developed and maintained coordinated 3D structural models using Revit.</li>
-                                                <li>Prepared quantity take-offs and reinforcement schedules from BIM models.</li>
-                                            </ul>
-                                        </div>
-                                        <div class="pl-4 border-l-2 border-slate-300">
-                                            <p class="font-semibold text-slate-900">Bridge Technical Office Engineer</p>
-                                            <p class="text-sm font-medium text-slate-600">MG Consultant (Prof. Dr. Mashhour Ghoneim)</p>
-                                            <p class="text-xs text-slate-500 mt-1">Dec 2023 – Mar 2025 | Cairo, Egypt</p>
-                                            <ul class="list-disc pl-5 mt-2 text-sm space-y-1">
-                                                <li>Prepared structural shop drawings for bridges using AutoCAD Structural Detailing.</li>
-                                                <li>Created Civil 3D surface models, profiles, and superelevation from road alignment data.</li>
-                                                <li>Performed design reviews and calculations for 'Ten Cluster Projects'.</li>
-                                            </ul>
-                                        </div>
-                                        <div class="pl-4 border-l-2 border-slate-300">
-                                            <p class="font-semibold text-slate-900">Site Engineer</p>
-                                            <p class="text-sm font-medium text-slate-600">MFJV – Trading and Contracting Company</p>
-                                            <p class="text-xs text-slate-500 mt-1">Sep 2022 – Nov 2023 | Ain Sokhna, Egypt</p>
-                                            <ul class="list-disc pl-5 mt-2 text-sm space-y-1">
-                                                <li>Supervised the 14 km lining of Mariouteya Canal.</li>
-                                                <li>Oversaw steelwork and carpentry for a 45m port partition in New Ain Sokhna.</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div>
-                                    <h3 class="text-xl font-bold text-slate-800 mb-4 border-b pb-2">Key Project Showcase</h3>
-                                    <div id="project-gallery" class="space-y-3">
-                                        <div class="project-item" data-details="Contributed to the structural shop drawings and coordination for the complex bridge network serving the new Grand Egyptian Museum, a landmark national project.">
-                                            <button class="w-full text-left p-3 bg-slate-50 hover:bg-sky-50 border border-slate-200 rounded-lg transition-colors duration-200">
-                                                <p class="font-semibold text-slate-800">Grand Egyptian Museum Bridges</p>
-                                            </button>
-                                            <div class="project-details hidden p-3 text-sm bg-white border-l border-r border-b border-slate-200 rounded-b-lg"></div>
-                                        </div>
-                                        <div class="project-item" data-details="Involved in the BIM modeling and shop drawing production for the Al-Amiriya High-Speed Rail bridge, a critical component of Egypt's expanding transportation infrastructure.">
-                                            <button class="w-full text-left p-3 bg-slate-50 hover:bg-sky-50 border border-slate-200 rounded-lg transition-colors duration-200">
-                                                <p class="font-semibold text-slate-800">Al-Amiriya HSR Bridge</p>
-                                            </button>
-                                            <div class="project-details hidden p-3 text-sm bg-white border-l border-r border-b border-slate-200 rounded-b-lg"></div>
-                                        </div>
-                                        <div class="project-item" data-details="Worked on the technical office tasks for the Tora Bridge as part of the Hasaballah Al-Kafrawi Axis development, focusing on structural detailing and documentation.">
-                                            <button class="w-full text-left p-3 bg-slate-50 hover:bg-sky-50 border border-slate-200 rounded-lg transition-colors duration-200">
-                                                <p class="font-semibold text-slate-800">Tora Bridge – Hasaballah Al-Kafrawi Axis</p>
-                                            </button>
-                                            <div class="project-details hidden p-3 text-sm bg-white border-l border-r border-b border-slate-200 rounded-b-lg"></div>
-                                        </div>
-                                        <div class="project-item" data-details="Assisted in preparing shop drawings and coordinating with infrastructure teams for the Talaat Harb Axis and Katameya Road Bridge project.">
-                                            <button class="w-full text-left p-3 bg-slate-50 hover:bg-sky-50 border border-slate-200 rounded-lg transition-colors duration-200">
-                                                <p class="font-semibold text-slate-800">Talaat Harb Axis and Katameya Road Bridge</p>
-                                            </button>
-                                            <div class="project-details hidden p-3 text-sm bg-white border-l border-r border-b border-slate-200 rounded-b-lg"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <section id="education" class="scroll-mt-24">
-                        <div class="bg-white p-6 sm:p-8 rounded-xl shadow-sm border border-slate-200">
-                            <h2 class="text-2xl font-bold text-slate-900 mb-4">Education & Certifications</h2>
-                            <p class="mb-8">A strong academic foundation is the bedrock of my engineering practice. Continuous learning and professional development are priorities for me. This section outlines my formal education and the key certifications I have earned to stay current with industry standards and technologies.</p>
-
-                            <div class="grid md:grid-cols-2 gap-8">
-                                <div>
-                                    <h3 class="text-xl font-bold text-slate-800 mb-4 border-b pb-2">Education</h3>
-                                    <div class="pl-4 border-l-2 border-sky-500">
-                                        <p class="font-semibold text-slate-900">Bachelor of Science in Civil Engineering</p>
-                                        <p class="text-sm font-medium text-slate-600">Tanta University</p>
-                                        <p class="text-xs text-slate-500 mt-1">Oct 2017 – Aug 2022 | Tanta, Egypt</p>
-                                        <ul class="list-disc pl-5 mt-2 text-sm space-y-1">
-                                            <li>Grade: Very Good with Honors (83.5%)</li>
-                                            <li>Graduation Project: Reinforced Concrete Design (Excellent Grade)</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h3 class="text-xl font-bold text-slate-800 mb-4 border-b pb-2">Certifications</h3>
-                                     <ul class="space-y-3 text-sm">
-                                        <li class="flex items-start">
-                                            <svg class="w-4 h-4 mr-2 mt-0.5 text-sky-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
-                                            <a href="https://certopus.com/c/c9e5dd4bb24b465094295fcb0fac2786" target="_blank" class="font-semibold hover:text-sky-700">Niqat BIM Diploma</a>
-                                        </li>
-                                        <li class="flex items-start">
-                                            <svg class="w-4 h-4 mr-2 mt-0.5 text-sky-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
-                                            <span>Structural Design Diploma – Civil Academy</span>
-                                        </li>
-                                        <li class="flex items-start">
-                                            <svg class="w-4 h-4 mr-2 mt-0.5 text-sky-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
-                                            <span>Infrastructure BIM Basics – Niqat Academy</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
+                <div class="flex items-center mb-2 justify-center lg:justify-start">
+                    <svg class="icon w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.774a11.096 11.096 0 006.105 6.105l.774-1.548a1 1 0 011.06-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"></path>
+                    </svg>
+                    <span>+20 102 737 0971</span>
                 </div>
-            </main>
+                <div class="flex items-center mb-2 justify-center lg:justify-start">
+                    <svg class="icon w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
+                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
+                    </svg>
+                    <span>Abdulrahman.Abohelal@gmail.com</span>
+                </div>
+                <div class="flex items-center justify-center lg:justify-start">
+                    <svg class="icon w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M16 4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2H6a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-8a2 2 0 00-2-2h-2V4zm-3 8v2h-2v-2h2zm-2-2h2V8h-2v2z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span><a href="https://linkedin.com/in/abdulrahman-abohelal" target="_blank" class="text-blue-600 hover:underline">linkedin.com/in/abdulrahman-abohelal</a></span>
+                </div>
+            </div>
 
+            <!-- Navigation-like buttons -->
+            <button class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 text-sm mb-4">
+                Overview
+            </button>
+            <button class="w-full px-4 py-2 bg-gray-200 text-gray-700 rounded-lg shadow-md hover:bg-gray-300 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 text-sm">
+                Skills Dashboard
+            </button>
+        </div>
+
+        <!-- Right Column - Resume Content -->
+        <div class="lg:w-2/3 w-full flex flex-col gap-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-6 hidden lg:block">Career Overview</h1>
+
+            <!-- Professional Profile Section -->
+            <div class="p-6 bg-gray-50 rounded-lg shadow-inner">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold text-gray-700">Professional Profile</h2>
+                    <button id="generateProfileBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 text-sm">
+                        ✨ Generate Profile
+                    </button>
+                </div>
+                <div id="profileSummary" contenteditable="true" class="p-4 bg-white rounded-lg border border-gray-300 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200">
+                    Structural Technical Office Engineer with three years' experience in both consulting and contracting environments. Skilled at producing BIM shop drawings, performing structural analysis, and coordinating cross-disciplinary models. Proficient in Revit, Civil 3D, Navisworks, and AutoCAD Structural Detailing. Focused on delivering precise BIM-based documentation for complex projects.
+                </div>
+            </div>
+
+            <!-- Professional Experience Section -->
+            <div class="p-6 bg-gray-50 rounded-lg shadow-inner">
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">Professional Experience</h2>
+                <div contenteditable="true" class="p-4 bg-white rounded-lg border border-gray-300 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200">
+                    <p class="font-bold">BIM Structural Technical Office Engineer – SIAC</p>
+                    <p class="text-sm text-gray-500 mb-2">March 2025 – Present</p>
+                    <ul class="list-disc pl-5">
+                        <li>Produced accurate BIM-based structural shop drawings for high-rise buildings and high-speed rail (HSR) stations.</li>
+                        <li>Developed and maintained coordinated 3D structural models aligned with architectural and MEP teams using Revit.</li>
+                        <li>Prepared quantity take-offs and reinforcement schedules from BIM models.</li>
+                    </ul>
+                </div>
+                <div contenteditable="true" class="p-4 mt-4 bg-white rounded-lg border border-gray-300 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200">
+                    <p class="font-bold">Site Engineer – MFJV – Trading and Contracting Company</p>
+                    <p class="text-sm text-gray-500 mb-2">September 2022 – November 2023</p>
+                    <ul class="list-disc pl-5">
+                        <li>Supervised Mariouteya Canal lining (14 km) using sulphate-resistant cement.</li>
+                        <li>Oversaw steelwork and carpentry for 45m port partition in New Ain Sokhna.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Gemini Tools Section -->
+            <div class="p-6 bg-gray-50 rounded-lg shadow-inner">
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">Gemini Tools</h2>
+                
+                <p class="text-sm text-gray-600 mb-6">Select a section of text in the resume to refine it or use the buttons below to generate content.</p>
+
+                <!-- Refine Text Button -->
+                <button id="refineTextBtn" class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 text-sm mb-4" disabled>
+                    ✨ Refine Selected Text
+                </button>
+
+                <!-- Generate Interview Questions Button -->
+                <button id="generateQuestionsBtn" class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 text-sm mb-4">
+                    ✨ Generate Interview Questions
+                </button>
+                
+                <!-- NEW: Generate Cover Letter Button -->
+                <button id="generateCoverLetterBtn" class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 text-sm mb-4">
+                    ✨ Generate Cover Letter
+                </button>
+                
+                <!-- NEW: Analyze Skills Button -->
+                <button id="analyzeSkillsBtn" class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 text-sm">
+                    ✨ Analyze Skill Gaps
+                </button>
+
+                <div class="mt-8">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-2">Results:</h3>
+                    <div id="results" class="p-4 bg-white rounded-lg border border-gray-300 min-h-[100px] text-gray-800 whitespace-pre-wrap overflow-y-auto max-h-96">
+                        <p class="text-gray-400">Your results will appear here.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Message Box for user feedback -->
+            <div id="messageBox" class="fixed bottom-4 right-4 bg-blue-600 text-white px-6 py-3 rounded-lg shadow-lg hidden transition-opacity duration-300 opacity-0">
+                <span id="messageText"></span>
+            </div>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            
-            const timelineData = {
-                labels: ['Site Engineer (MFJV)', 'Bridge Tech. Office Eng. (MG Consultant)', 'BIM Structural Eng. (SIAC)'],
-                datasets: [{
-                    label: 'Job Tenure (Months)',
-                    data: [14, 15, 6],
-                    backgroundColor: ['#64748b', '#38bdf8', '#0ea5e9'],
-                    borderColor: '#ffffff',
-                    borderWidth: 2,
-                    borderRadius: 4,
-                    borderSkipped: false,
-                }]
+            // Function to show a temporary message box
+            const showMessage = (text) => {
+                const messageBox = document.getElementById('messageBox');
+                const messageText = document.getElementById('messageText');
+                messageText.textContent = text;
+                messageBox.classList.remove('hidden');
+                setTimeout(() => {
+                    messageBox.classList.add('opacity-100');
+                    setTimeout(() => {
+                        messageBox.classList.remove('opacity-100');
+                        setTimeout(() => {
+                            messageBox.classList.add('hidden');
+                        }, 300);
+                    }, 3000);
+                }, 100);
             };
 
-            const bimSkillsData = {
-                labels: ['Autodesk Revit', 'Navisworks', 'AutoCAD Structural Detailing', 'Tekla Structures', 'AutoCAD'],
-                datasets: [{
-                    label: 'Proficiency',
-                    data: [90, 85, 80, 70, 85],
-                    backgroundColor: '#38bdf8',
-                    borderColor: '#0284c7',
-                    borderWidth: 1,
-                    borderRadius: 4,
-                }]
-            };
+            // Global variable for the API key, provided by the runtime environment
+            const apiKey = "";
 
-            const analysisSkillsData = {
-                labels: ['Autodesk Civil 3D', 'SAP2000', 'ETABS', 'SAFE'],
-                datasets: [{
-                    label: 'Proficiency',
-                    data: [85, 80, 80, 75],
-                    backgroundColor: '#64748b',
-                    borderColor: '#475569',
-                    borderWidth: 1,
-                    borderRadius: 4,
-                }]
-            };
+            // Function to make an LLM API call
+            async function callGeminiAPI(prompt, systemInstruction) {
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+                
+                // Add the system instruction to the payload
+                const payload = {
+                    contents: [{ parts: [{ text: prompt }] }],
+                    systemInstruction: { parts: [{ text: systemInstruction }] }
+                };
 
-            const chartOptions = (indexAxis = 'y', displayLegend = false, displayTitle = '') => ({
-                indexAxis,
-                maintainAspectRatio: false,
-                responsive: true,
-                scales: {
-                    x: {
-                        beginAtZero: true,
-                        grid: {
-                            display: false,
-                            drawBorder: false,
-                        },
-                        ticks: {
-                            font: { size: 10 }
-                        }
-                    },
-                    y: {
-                        grid: {
-                            display: false,
-                            drawBorder: false,
-                        },
-                        ticks: {
-                            font: { size: 12 }
-                        }
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(`API error: ${JSON.stringify(errorData)}`);
                     }
-                },
-                plugins: {
-                    legend: {
-                        display: displayLegend,
-                        position: 'bottom',
-                    },
-                    title: {
-                        display: !!displayTitle,
-                        text: displayTitle,
-                        font: { size: 14, weight: 'bold' },
-                        padding: { top: 10, bottom: 20 }
-                    },
-                    tooltip: {
-                        backgroundColor: '#1e293b',
-                        titleFont: { size: 14, weight: 'bold' },
-                        bodyFont: { size: 12 },
-                        padding: 10,
-                        cornerRadius: 4,
-                        displayColors: false,
-                    }
+
+                    const result = await response.json();
+                    return result.candidates[0].content.parts[0].text;
+                } catch (error) {
+                    console.error('Error calling Gemini API:', error);
+                    showMessage('Error: Could not connect to Gemini API. Check the console for details.');
+                    return null;
                 }
-            });
-            
-            const timelineOptions = chartOptions('y', true);
-            timelineOptions.plugins.tooltip.callbacks = {
-                label: function(context) {
-                    let label = context.dataset.label || '';
-                    if (label) {
-                        label += ': ';
-                    }
-                    if (context.parsed.x !== null) {
-                        label += context.parsed.x + ' months';
-                    }
-                    return label;
-                }
-            };
-
-            const skillsOptions = chartOptions('y', false);
-            skillsOptions.scales.x.max = 100;
-            skillsOptions.plugins.tooltip.callbacks = {
-                label: function(context) {
-                    const value = context.parsed.x;
-                    let proficiency = 'Proficient';
-                    if (value >= 85) proficiency = 'Advanced';
-                    if (value >= 95) proficiency = 'Expert';
-                    return `${proficiency} (${value}%)`;
-                }
-            };
-
-            const timelineCtx = document.getElementById('timelineChart')?.getContext('2d');
-            if(timelineCtx) new Chart(timelineCtx, { type: 'bar', data: timelineData, options: timelineOptions });
-
-            const bimSkillsCtx = document.getElementById('bimSkillsChart')?.getContext('2d');
-            if(bimSkillsCtx) new Chart(bimSkillsCtx, { type: 'bar', data: bimSkillsData, options: skillsOptions });
-
-            const analysisSkillsCtx = document.getElementById('analysisSkillsChart')?.getContext('2d');
-            if(analysisSkillsCtx) new Chart(analysisSkillsCtx, { type: 'bar', data: analysisSkillsData, options: { ...skillsOptions } });
-
-            const navLinks = document.querySelectorAll('.nav-link');
-            const sections = document.querySelectorAll('main section');
-
-            function updateActiveLink() {
-                let currentSection = '';
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    if (window.scrollY >= sectionTop - 120) {
-                        currentSection = section.getAttribute('id');
-                    }
-                });
-
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.dataset.target === currentSection) {
-                        link.classList.add('active');
-                    }
-                });
             }
 
-            navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.dataset.target;
-                    const targetElement = document.getElementById(targetId);
-                    if (targetElement) {
-                        targetElement.scrollIntoView({ behavior: 'smooth' });
-                    }
-                });
+            // --- LLM Feature 1: Generate Profile Summary ---
+            const generateProfileBtn = document.getElementById('generateProfileBtn');
+            const profileSummaryDiv = document.getElementById('profileSummary');
+            
+            generateProfileBtn.addEventListener('click', async () => {
+                const resultsDiv = document.getElementById('results');
+                resultsDiv.innerHTML = '<p class="text-gray-400 animate-pulse">Generating profile...</p>';
+                generateProfileBtn.disabled = true;
+
+                const resumeContent = document.getElementById('app').innerText; // Get all text from the resume
+                const prompt = `Based on the following resume content, write a concise and professional profile summary. The summary should highlight key skills and experience. Do not mention "based on the resume".
+
+Resume content:
+${resumeContent}`;
+
+                const systemInstruction = `You are a professional resume writer. Your task is to generate a compelling and concise profile summary for a resume. The summary should be written from the first person perspective (e.g., "Skilled at..."), but without using "I". Focus on actionable skills and achievements.`;
+
+                const generatedText = await callGeminiAPI(prompt, systemInstruction);
+
+                if (generatedText) {
+                    profileSummaryDiv.textContent = generatedText.trim();
+                    resultsDiv.innerHTML = '<p class="text-green-500">Profile generated successfully!</p>';
+                } else {
+                    resultsDiv.innerHTML = '<p class="text-red-500">Generation failed.</p>';
+                }
+                generateProfileBtn.disabled = false;
             });
 
-            window.addEventListener('scroll', updateActiveLink);
-            updateActiveLink(); 
+            // --- LLM Feature 2: Refine Selected Text ---
+            const refineTextBtn = document.getElementById('refineTextBtn');
+            const resultsDiv = document.getElementById('results');
+            let selectedText = '';
 
-            document.querySelectorAll('.project-item button').forEach(button => {
-                button.addEventListener('click', () => {
-                    const item = button.parentElement;
-                    const detailsDiv = item.querySelector('.project-details');
-                    const detailsText = item.dataset.details;
-                    
-                    if (detailsDiv.classList.contains('hidden')) {
-                        detailsDiv.innerHTML = `<p>${detailsText}</p>`;
-                        detailsDiv.classList.remove('hidden');
-                        button.classList.add('bg-sky-50');
+            document.addEventListener('selectionchange', () => {
+                const selection = window.getSelection();
+                selectedText = selection.toString().trim();
+                refineTextBtn.disabled = selectedText.length === 0;
+            });
+
+            refineTextBtn.addEventListener('click', async () => {
+                if (selectedText) {
+                    resultsDiv.innerHTML = '<p class="text-gray-400 animate-pulse">Refining text...</p>';
+                    refineTextBtn.disabled = true;
+
+                    const prompt = `Refine the following text to make it sound more professional, active, and impactful for a resume. Keep the original meaning but improve the phrasing and word choice.
+
+Text to refine:
+"${selectedText}"`;
+
+                    const systemInstruction = `You are a professional resume editor. Your task is to take a piece of text and rewrite it to be more impactful and professional, suitable for a resume. Use strong action verbs and professional language. Provide only the refined text, nothing else.`;
+
+                    const refinedText = await callGeminiAPI(prompt, systemInstruction);
+
+                    if (refinedText) {
+                        resultsDiv.innerHTML = `<h4 class="font-bold mb-2">Refined Text:</h4><p>${refinedText}</p>`;
+                        showMessage('Text refined successfully!');
                     } else {
-                        detailsDiv.classList.add('hidden');
-                        detailsDiv.innerHTML = '';
-                        button.classList.remove('bg-sky-50');
+                        resultsDiv.innerHTML = '<p class="text-red-500">Refinement failed.</p>';
                     }
-                });
+                    refineTextBtn.disabled = false;
+                }
             });
+
+            // --- LLM Feature 3: Generate Interview Questions ---
+            const generateQuestionsBtn = document.getElementById('generateQuestionsBtn');
+            
+            generateQuestionsBtn.addEventListener('click', async () => {
+                const resultsDiv = document.getElementById('results');
+                resultsDiv.innerHTML = '<p class="text-gray-400 animate-pulse">Generating questions...</p>';
+                generateQuestionsBtn.disabled = true;
+
+                const resumeContent = document.getElementById('app').innerText; // Get all text from the resume
+                const prompt = `Based on the following resume content, generate 5 relevant interview questions a hiring manager might ask. Categorize the questions.
+
+Resume content:
+${resumeContent}`;
+
+                const systemInstruction = `You are a career coach. Your task is to generate a list of 5 interview questions based on a candidate's resume. The questions should be insightful and designed to help the candidate prepare for their interview. Present the questions clearly and number them.`;
+
+                const questions = await callGeminiAPI(prompt, systemInstruction);
+
+                if (questions) {
+                    resultsDiv.innerHTML = `<h4 class="font-bold mb-2">Potential Interview Questions:</h4><p>${questions}</p>`;
+                    showMessage('Interview questions generated!');
+                } else {
+                    resultsDiv.innerHTML = '<p class="text-red-500">Generation failed.</p>';
+                }
+                generateQuestionsBtn.disabled = false;
+            });
+
+            // --- NEW LLM Feature 4: Generate Cover Letter ---
+            const generateCoverLetterBtn = document.getElementById('generateCoverLetterBtn');
+
+            generateCoverLetterBtn.addEventListener('click', async () => {
+                const resultsDiv = document.getElementById('results');
+                resultsDiv.innerHTML = '<p class="text-gray-400 animate-pulse">Generating cover letter...</p>';
+                generateCoverLetterBtn.disabled = true;
+
+                const resumeContent = document.getElementById('app').innerText;
+                const prompt = `Write a professional cover letter based on the following resume content. Use a formal tone and do not include placeholders like "company name" or "hiring manager". The cover letter should highlight the candidate's key skills and experience as a structural engineer.
+
+Resume content:
+${resumeContent}`;
+
+                const systemInstruction = `You are a professional cover letter writer. Your task is to write a formal cover letter for a candidate based on their resume. The letter should be well-structured, professional, and highlight key qualifications without needing a specific job description.`;
+
+                const coverLetter = await callGeminiAPI(prompt, systemInstruction);
+
+                if (coverLetter) {
+                    resultsDiv.innerHTML = `<h4 class="font-bold mb-2">Draft Cover Letter:</h4><p class="whitespace-pre-wrap">${coverLetter}</p>`;
+                    showMessage('Cover letter generated!');
+                } else {
+                    resultsDiv.innerHTML = '<p class="text-red-500">Generation failed.</p>';
+                }
+                generateCoverLetterBtn.disabled = false;
+            });
+            
+            // --- NEW LLM Feature 5: Analyze Skill Gaps ---
+            const analyzeSkillsBtn = document.getElementById('analyzeSkillsBtn');
+
+            analyzeSkillsBtn.addEventListener('click', async () => {
+                const resultsDiv = document.getElementById('results');
+                resultsDiv.innerHTML = '<p class="text-gray-400 animate-pulse">Analyzing skills...</p>';
+                analyzeSkillsBtn.disabled = true;
+
+                const resumeContent = document.getElementById('app').innerText;
+                const prompt = `Based on the following resume, identify potential skill gaps or areas for professional development for a structural engineer. Provide actionable suggestions on how to improve. The suggestions should be practical and relevant to the industry.
+
+Resume content:
+${resumeContent}`;
+
+                const systemInstruction = `You are a career development expert specializing in engineering. Your task is to analyze a resume and provide constructive, professional feedback on skill gaps and areas for growth. Present your analysis clearly using bullet points and a concluding summary.`;
+
+                const skillAnalysis = await callGeminiAPI(prompt, systemInstruction);
+
+                if (skillAnalysis) {
+                    resultsDiv.innerHTML = `<h4 class="font-bold mb-2">Skill Gap Analysis:</h4><p class="whitespace-pre-wrap">${skillAnalysis}</p>`;
+                    showMessage('Skill analysis complete!');
+                } else {
+                    resultsDiv.innerHTML = '<p class="text-red-500">Analysis failed.</p>';
+                }
+                analyzeSkillsBtn.disabled = false;
+            });
+
         });
     </script>
-
 </body>
 </html>
